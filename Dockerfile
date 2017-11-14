@@ -28,15 +28,14 @@ RUN curl -O -L https://archive.apache.org/dist/spark/spark-2.1.1/spark-${SPARK_V
 RUN curl -O -L https://archive.apache.org/dist/hadoop/core/hadoop-2.5.2/hadoop-2.5.2.tar.gz \
     && tar -xzvf hadoop-2.5.2.tar.gz -C /opt/sparkdistribute \
     && rm -f hadoop-2.5.2.tar.gz
-COPY conf /opt/sparkdistribute/spark-${PARK_VERSION}-bin-hadoop2.4/
-COPY hadoop /opt/sparkdistribute/hadoop-2.5.2/etc/
+COPY conf/spark/* /opt/sparkdistribute/spark-${PARK_VERSION}-bin-hadoop2.4/conf/
+COPY conf/hadoop/* /opt/sparkdistribute/hadoop-2.5.2/etc/hadoop/
 COPY hbase-1.0.0.tar.gz /opt/
 RUN pip install --upgrade pip && pip install apache-airflow[devel,postgres,mysql,hive,hdfs,vertica,cloudant,doc,samba,crypto,docker,async,celery,cgroups,datadog,druid,emr,gcp_api,webhdfs,jira,jdbc,rabbitmq,salesforce,statsd,ldap,kerberos,password,qds]=1.8.2 supervisor suds kafka-python pyhive[hive,sqlalchemy] thrift \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
-COPY supervisord.conf /etc/
-COPY airflow.cfg $AIRFLOW_HOME/
-COPY unittests.cfg $AIRFLOW_HOME/
+COPY conf/supervisor/supervisord.conf /etc/
+COPY conf/airflow/* $AIRFLOW_HOME/
 RUN sed -i -e '/Defaults    requiretty/{ s/.*/# Defaults    requiretty/ }' /etc/sudoers
 RUN useradd dataflow && useradd isearch
 WORKDIR /opt/baitu
