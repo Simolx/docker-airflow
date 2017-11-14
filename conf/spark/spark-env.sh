@@ -64,3 +64,20 @@
 # - SPARK_IDENT_STRING  A string representing this instance of spark. (Default: $USER)
 # - SPARK_NICENESS      The scheduling priority for daemons. (Default: 0)
 # - SPARK_NO_DAEMONIZE  Run the proposed command in the foreground. It will not output a PID file.
+
+JAVA_HOME=/opt/elasticdistribute/jdk1.8.0_131
+SPARK_LOCAL_IP=${HOSTNAME}
+SPARK_LOCAL_DIR=/mnt/data02/spark/local,/mnt/data03/spark/local,/mnt/data04/spark/local,/mnt/data05/spark/local,/mnt/data06/spark/local
+HADOOP_CONF_DIR=/opt/elasticdistribute/hadoop/conf
+SPARK_MASTER_WEBUI_PORT=19090
+SPARK_WORKER_CORES=16
+SPARK_WORKER_MEMORY=80g
+SPARK_WORKER_DIR=/mnt/data01/spark/work
+SPARK_WORKER_OPTS="-Dspark.worker.cleanup.enabled=true"
+SPARK_DAEMON_MEMORY=2g
+SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=idl65:2181,idl75:2181,idl74:2181"
+SPARK_LOG_DIR=/var/log/sparkstandalone
+SPARK_PID_DIR=${SPARK_HOME}/pid
+#PYSPARK_PYTHON=/home/spark/anaconda3/bin/python3.6
+PYSPARK_PYTHON=/home/spark/langdete/miniconda3/bin/python
+export LD_LIBRARY_PATH=/opt/third_library/cld2/lib:/opt/third_library/third_party/lib:$LD_LIBRARY_PATH
