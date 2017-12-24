@@ -30,9 +30,9 @@ RUN curl -O https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.s
     && rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN curl -O -v -j -k -L -H "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.tar.gz \
     && tar -xzf jdk-8u151-linux-x64.tar.gz -C /opt/sparkdistribute \
-    curl -O -L https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${SPARK_HADOOP_VERSION}.tgz \
+    && curl -O -L https://archive.apache.org/dist/spark/spark-${SPARK_VERSION}/spark-${SPARK_VERSION}-bin-hadoop${SPARK_HADOOP_VERSION}.tgz \
     && tar -xzf spark-${SPARK_VERSION}-bin-hadoop${SPARK_HADOOP_VERSION}.tgz -C /opt/sparkdistribute \
-    curl -O -L https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
+    && curl -O -L https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz \
     && tar -xzf hadoop-${HADOOP_VERSION}.tar.gz -C /opt/sparkdistribute \
     && rm -f jdk-8u151-linux-x64.tar.gz spark-${SPARK_VERSION}-bin-hadoop${SPARK_HADOOP_VERSION}.tgz hadoop-${HADOOP_VERSION}.tar.gz
 COPY conf/spark/* /opt/sparkdistribute/spark-${SPARK_VERSION}-bin-hadoop${SPARK_HADOOP_VERSION}/conf/
