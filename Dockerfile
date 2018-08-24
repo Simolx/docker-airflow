@@ -1,4 +1,5 @@
 FROM dieudonne/docker-spark
+
 MAINTAINER Dieudonne lx <lx.simon@yahoo.com>
 
 ENV AIRFLOW_VERSION=1.9.0 \
@@ -15,7 +16,7 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
     rm -rf get-pip.py ~/.cache/pip/*
 # install airflow
 COPY hbase-1.0.0.tar.gz /opt/
-RUN pip install apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} kafka-python pyhive[hive,sqlalchemy] celery[redis] thrift \
+RUN pip install kafka-python pyhive[hive,sqlalchemy] celery[redis] apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
