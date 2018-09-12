@@ -19,6 +19,7 @@ services:
     build:
       context: airflow
       #dockerfile: Dockerfile-develop
+    image: dieudonne/docker-airflow
     restart: unless-stopped
     depends_on:
       - db
