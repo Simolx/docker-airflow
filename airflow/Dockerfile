@@ -16,12 +16,15 @@ RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
     rm -rf get-pip.py ~/.cache/pip/*
 # install airflow
 COPY hbase-1.0.0.tar.gz /opt/
-RUN pip install kafka-python pyhive[hive,sqlalchemy] celery[redis] apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
+RUN conda install pyhive -y \
+    && pip install apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} kafka-python pyhive[hive,sqlalchemy] celery[redis] \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
 COPY conf/supervisor/supervisord.conf /etc/
 COPY conf/airflow/* $AIRFLOW_HOME/
+COPY conf/airflow-daemon.sh /usr/local/bin/airflow-daemon
+RUN chmod +x /usr/local/bin/airflow-daemon
 VOLUME [ "/etc/supervisord", "$AIRFLOW_HOME/dags", "/opt/baitu" ]
 EXPOSE 8081 9001
 CMD ["/bin/bash", "-c", "supervisord -n -c /etc/supervisord.conf"]
