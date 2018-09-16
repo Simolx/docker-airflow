@@ -17,8 +17,8 @@ RUN conda install -y python=3.6.6 \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
-COPY conf/airflow/* $AIRFLOW_HOME/
-COPY conf/airflow-daemon.sh /usr/local/bin/airflow-daemon
+COPY conf/* $AIRFLOW_HOME/
+COPY bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
 RUN chmod +x /usr/local/bin/airflow-daemon
 VOLUME [ "$AIRFLOW_HOME/dags", "/opt/baitu" ]
 EXPOSE 8081 9001

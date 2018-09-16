@@ -5,13 +5,15 @@ services:
     image: mysql:5
     restart: unless-stopped
     volumes:
-      - ./volumes/airflow/mysql:/var/lib/mysql
+      - ./volumes/mysql/data:/var/lib/mysql
+      # for mysql 5.7+
+      - ./volumes/mysql/conf/my.cnf:/etc/mysql/mysql.conf.d/my.cnf
     environment:
       - MYSQL_ROOT_PASSWORD=rootairflow
       - MYSQL_DATABASE=airflow
       - MYSQL_USER=airflow
       - MYSQL_PASSWORD=airflow
-        #      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - "3306:3306"
 
@@ -24,17 +26,17 @@ services:
     depends_on:
       - db
     volumes:
-      - ./volumes/airflow/supervisord:/etc/supervisord
       - ./volumes/airflow/dags:/opt/airflow/dags
       - ./volumes/airflow/baitu:/opt/baitu
       - ./volumes/hadoop/conf:/opt/distribute/hadoop-2.7.2/etc/hadoop
       - ./volumes/hadoop/transwarp/topology.data:/etc/transwarp/conf/topology.data:ro
       - ./volumes/hadoop/transwarp/rack_map.sh:/usr/lib/transwarp/scripts/rack_map.sh:ro
-        #      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
       - AIRFLOW_METASTORE=db
     ports:
       - "8081:8081"
       - "19091:19090"
       - "9001:9001"
+    command: ["tailf", "/etc/hosts"]
 

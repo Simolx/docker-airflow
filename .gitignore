@@ -2,6 +2,8 @@ volumes/*
 !volumes/hadoop
 volumes/hadoop/*
 !volumes/hadoop/transwarp
+!volumes/mysql
+volumes/mysql/data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
