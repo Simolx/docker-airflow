@@ -11,14 +11,14 @@ RUN yum -y update \
     && rm -rf /var/cache/yum
 RUN mkdir -p /var/log/airflow
 # install airflow
-COPY hbase-1.0.0.tar.gz /opt/
+COPY app/hbase-1.0.0.tar.gz /opt/
 RUN conda install -y python=3.6.6 \
     && pip install kafka-python apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
-COPY conf/* $AIRFLOW_HOME/
-COPY bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
+COPY app/conf/* $AIRFLOW_HOME/
+COPY app/bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
 RUN chmod +x /usr/local/bin/airflow-daemon
 VOLUME [ "$AIRFLOW_HOME/dags", "/opt/baitu" ]
 EXPOSE 8081 9001
