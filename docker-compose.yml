@@ -38,5 +38,4 @@ services:
       - "8081:8081"
       - "19091:19090"
       - "9001:9001"
-    command: ["tailf", "/etc/hosts"]
 
