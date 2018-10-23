@@ -23,6 +23,7 @@ services:
       #dockerfile: Dockerfile-develop
     image: dieudonne/docker-airflow
     restart: unless-stopped
+    network_mode: host
     depends_on:
       - db
     volumes:
@@ -34,8 +35,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
     environment:
       - AIRFLOW_METASTORE=db
-    ports:
-      - "8081:8081"
-      - "19091:19090"
-      - "9001:9001"
+      - AIRFLOW_METASTORE_PORT=3306
+        #    ports:
+        #      - "8081:8081"
+        #      - "19091:19090"
 

@@ -21,5 +21,5 @@ COPY app/conf/* $AIRFLOW_HOME/
 COPY app/bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
 RUN chmod +x /usr/local/bin/airflow-daemon
 VOLUME [ "$AIRFLOW_HOME/dags", "/opt/baitu" ]
-EXPOSE 8081 9001
+EXPOSE 8081 19090
 CMD ["/usr/local/bin/airflow-daemon"]
