@@ -4,6 +4,8 @@ MAINTAINER Dieudonne lx <lx.simon@yahoo.com>
 
 ENV AIRFLOW_VERSION=1.10.0 \
     AIRFLOW_HOME="/opt/airflow" \
+    AIRFLOW_METASTORE_PORT=3306 \
+    TERM=xterm \
     SLUGIFY_USES_TEXT_UNIDECODE=yes
 RUN yum -y update \
     && yum install -y mariadb mariadb-devel gcc gcc-c++ cyrus-sasl-devel cyrus-sasl-plain cyrus-sasl-gssapi cyrus-sasl-scram cyrus-sasl-md5 libffi-devel libxml2-devel libxslt-devel postgresql-devel \
