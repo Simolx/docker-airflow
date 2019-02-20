@@ -2,7 +2,7 @@ FROM dieudonne/docker-spark
 
 MAINTAINER Dieudonne lx <lx.simon@yahoo.com>
 
-ENV AIRFLOW_VERSION=1.10.0 \
+ENV AIRFLOW_VERSION=1.10.1 \
     AIRFLOW_HOME="/opt/airflow" \
     AIRFLOW_METASTORE_PORT=3306 \
     TERM=xterm \
@@ -14,7 +14,8 @@ RUN yum -y update \
 RUN mkdir -p /var/log/airflow
 # install airflow
 COPY app/hbase-1.0.0.tar.gz /opt/
-RUN conda install -y python=3.6.6 \
+RUN conda update --all -y \
+    && conda install -y python=3.6 \
     && pip install kafka-python apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
@@ -22,6 +23,6 @@ RUN conda install -y python=3.6.6 \
 COPY app/conf/* $AIRFLOW_HOME/
 COPY app/bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
 RUN chmod +x /usr/local/bin/airflow-daemon
-VOLUME [ "$AIRFLOW_HOME/dags", "/opt/baitu" ]
+VOLUME [ "$AIRFLOW_HOME/dags", "/opt/baitu", "$AIRFLOW_HOME/logs" ]
 EXPOSE 8081 19090
 CMD ["/usr/local/bin/airflow-daemon"]
