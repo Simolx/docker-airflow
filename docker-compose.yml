@@ -13,7 +13,7 @@ services:
       - MYSQL_DATABASE=airflow
       - MYSQL_USER=airflow
       - MYSQL_PASSWORD=airflow
-        #      - /etc/localtime:/etc/localtime:ro
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - "3306:3306"
 
@@ -23,23 +23,22 @@ services:
       #dockerfile: Dockerfile-develop
     image: dieudonne/docker-airflow
     restart: unless-stopped
-    #    network_mode: host
+    network_mode: host
     depends_on:
       - db
     volumes:
       - ./volumes/airflow/dags:/opt/airflow/dags
-      - ./volumes/airflow/airflow.cfg:/opt/airflow/airflow.cfg
+      - ./volumes/airflow/logs:/opt/airflow/logs
       - ./volumes/airflow/baitu:/opt/baitu
-        #      - ./volumes/hadoop/conf:/opt/distribute/hadoop-2.7.2/etc/hadoop
-        #      - ./volumes/hadoop/transwarp/topology.data:/etc/transwarp/conf/topology.data:ro
-        #      - ./volumes/hadoop/transwarp/rack_map.sh:/usr/lib/transwarp/scripts/rack_map.sh:ro
-        #      - /etc/localtime:/etc/localtime:ro
+      - ./volumes/hadoop/conf:/opt/distribute/hadoop-2.7.2/etc/hadoop
+      - ./volumes/hadoop/transwarp/topology.data:/etc/transwarp/conf/topology.data:ro
+      - ./volumes/hadoop/transwarp/rack_map.sh:/usr/lib/transwarp/scripts/rack_map.sh:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
-        #- AIRFLOW_METASTORE=192.168.8.103
-      - AIRFLOW_METASTORE=db
-        #      - AIRFLOW_METASTORE_PORT=3306
+      - AIRFLOW_METASTORE=192.168.8.103
+        #- AIRFLOW_METASTORE=db
         #    links:
         #      - db
-    ports:
-      - "8081:8081"
-      - "19091:19090"
+        #ports:
+        #- "8081:8081"
+        #- "19091:19090"

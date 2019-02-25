@@ -21,5 +21,6 @@ if [ ${wordsnum} -eq 0 ]; then
 	echo 'database airflow is empty, run airflow initdb'
 	airflow initdb
 fi
-airflow webserver -p 8081
+nohup airflow webserver -p 8081 -D > /opt/airflow/logs/webserver_log.log &
+airflow scheduler -D
 
