@@ -1,8 +1,8 @@
-FROM dieudonne/docker-spark:1.0.0
+FROM simolx/spark:2.4.4
 
 MAINTAINER Dieudonne lx <lx.simon@yahoo.com>
 
-ENV AIRFLOW_VERSION=1.10.2 \
+ENV AIRFLOW_VERSION=1.10.5 \
     AIRFLOW_HOME="/opt/airflow" \
     AIRFLOW_METASTORE_PORT=3306
 RUN yum -y update \
@@ -16,6 +16,8 @@ RUN pip install kafka-python apache-airflow[async,celery,cloudant,crypto,dask,da
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
+RUN pip install cwlref-runner cwl-airflow benten \
+    && rm -rf ~/.cache/pip/*
 COPY app/python_operator.py ${USER_PATH}/python3/lib/python3.6/site-packages/airflow/operators/
 COPY app/conf/* $AIRFLOW_HOME/
 COPY app/bin/airflow-daemon.sh /usr/local/bin/airflow-daemon
