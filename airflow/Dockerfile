@@ -2,7 +2,7 @@ FROM simolx/spark:2.4.4
 
 MAINTAINER Dieudonne lx <lx.simon@yahoo.com>
 
-ENV AIRFLOW_VERSION=1.10.5 \
+ENV AIRFLOW_VERSION=1.10.6 \
     AIRFLOW_HOME="/opt/airflow" \
     AIRFLOW_METASTORE_PORT=3306
 RUN yum -y update \
@@ -12,11 +12,13 @@ RUN yum -y update \
 RUN mkdir -p /var/log/airflow
 # install airflow
 COPY app/hbase-1.0.0.tar.gz /opt/
-RUN pip install kafka-python apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
+# RUN pip install --index-url ${PYPI_URL} --trusted-host ${TRUST_HOST} kafka-python apache-airflow[async,celery,cloudant,crypto,dask,databricks,datadog,devel_hadoop,doc,docker,emr,jdbc,jira,ldap,postgres,qds,redis,salesforce,samba,sendgrid,ssh,statsd,vertica,druid]==${AIRFLOW_VERSION} \
+RUN pip install --index-url http://192.168.8.101:18081/repository/pypi_local/simple --trusted-host 192.168.8.101:18081 kafka-python apache-airflow[async,celery,dask,databricks,datadog,devel_hadoop,doc,docker,jdbc,jira,ldap,postgres,qds,redis,salesforce,ssh,statsd,vertica]==${AIRFLOW_VERSION} \
     && pip install /opt/hbase-1.0.0.tar.gz \
     && conda clean --all -y \
     && rm -rf /opt/hbase-1.0.0.tar.gz ~/.cache/pip/*
-RUN pip install cwlref-runner cwl-airflow benten \
+# RUN pip install cwlref-runner cwl-airflow benten \
+RUN pip install --index-url http://192.168.8.101:18081/repository/pypi_local/simple --trusted-host 192.168.8.101:18081 cwlref-runner cwl-airflow benten \
     && rm -rf ~/.cache/pip/*
 COPY app/python_operator.py ${USER_PATH}/python3/lib/python3.6/site-packages/airflow/operators/
 COPY app/conf/* $AIRFLOW_HOME/

@@ -8,12 +8,12 @@ services:
       - ./volumes/mysql/data:/var/lib/mysql
       # for mysql 5.7+
       - ./volumes/mysql/conf/my.cnf:/etc/mysql/mysql.conf.d/my.cnf
+        #      - /etc/localtime:/etc/localtime:ro
     environment:
       - MYSQL_ROOT_PASSWORD=rootairflow
       - MYSQL_DATABASE=airflow
       - MYSQL_USER=airflow
       - MYSQL_PASSWORD=airflow
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - "3306:3306"
 
@@ -21,9 +21,9 @@ services:
     build:
       context: airflow
       #dockerfile: Dockerfile-develop
-    image: dieudonne/docker-airflow
+    image: dieudonne/docker-airflow:${AIRFLOW_VERSION}
     restart: unless-stopped
-    network_mode: host
+    #   network_mode: host
     depends_on:
       - db
     volumes:
@@ -33,12 +33,13 @@ services:
       - ./volumes/hadoop/conf:/opt/distribute/hadoop-2.7.2/etc/hadoop
       - ./volumes/hadoop/transwarp/topology.data:/etc/transwarp/conf/topology.data:ro
       - ./volumes/hadoop/transwarp/rack_map.sh:/usr/lib/transwarp/scripts/rack_map.sh:ro
-      - /etc/localtime:/etc/localtime:ro
+        #      - /etc/localtime:/etc/localtime:ro
     environment:
-      - AIRFLOW_METASTORE=192.168.8.103
-        #- AIRFLOW_METASTORE=db
-        #    links:
-        #      - db
-        #ports:
-        #- "8081:8081"
-        #- "19091:19090"
+        #      - AIRFLOW_METASTORE=192.168.8.103
+      - AIRFLOW_METASTORE=db
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    links:
+      - db
+    ports:
+      - "8081:8081"
+      - "19091:19090"
